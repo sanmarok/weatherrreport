@@ -1,6 +1,8 @@
 import socket
 import threading
 import os
+from colorama import Fore
+from datetime import datetime
 
 os.system("cls")
 
@@ -11,7 +13,7 @@ puerto = 12345
 # Función que maneja cada conexión entrante
 def manejar_cliente(cliente_socket, direccion):
     # Mensaje de entrada cuando se establece la conexión
-    print(f"Conexión entrante desde {direccion[0]}:{direccion[1]}")
+    print(datetime.now().strftime("%d/%m/%Y %H:%M:%S"),"-",Fore.GREEN,f"Conexión entrante desde {direccion[0]}:{direccion[1]}",Fore.WHITE)
     
     # Mensaje de bienvenida
     mensaje_bienvenida = "¡Conexion exitosa!"
@@ -36,7 +38,7 @@ def manejar_cliente(cliente_socket, direccion):
         cliente_socket.send(respuesta.encode("utf-8"))
     
     # Mensaje de salida cuando se cierra la conexión
-    print(f"Conexión cerrada con {direccion[0]}:{direccion[1]}")
+    print(datetime.now().strftime("%d/%m/%Y %H:%M:%S"),"-",Fore.RED,f"Conexión cerrada con {direccion[0]}:{direccion[1]}",Fore.WHITE)
     cliente_socket.close()
 
 # Creamos un socket para el servidor utilizando IPv4 y TCP
