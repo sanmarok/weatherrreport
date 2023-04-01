@@ -3,10 +3,10 @@ import os
 import rich
 from rich.table import Table
 from colorama import Fore
-
+from datetime import datetime
 
 def mensajecontrol():
-    mensaje = input("\nOpcion: ")
+    mensaje = input("Opcion: ")
     if mensaje != "1" and mensaje != "2" and mensaje != "3" and mensaje != "4":
         os.system("cls")
         print(Fore.RED,"¡Error!",Fore.WHITE)
@@ -41,14 +41,17 @@ rich.print(menu)
 # Bucle principal que permite al usuario enviar mensajes al servidor
 while True:
     mensaje = mensajecontrol()
+    
+    # Si el usuario ingresa la opcion 4, salimos del bucle
+    if mensaje == "4":
+        break
+    
     # Codificamos el mensaje en UTF-8 y lo enviamos al servidor
     cliente_socket.send(mensaje.encode("utf-8"))
     # Recibimos la respuesta del servidor y la decodificamos en una cadena de texto utilizando la codificación UTF-8
     respuesta = cliente_socket.recv(1024).decode("utf-8")
-    print(f"Respuesta del servidor: {respuesta}")
-    # Si el usuario ingresa la palabra "adios", salimos del bucle
-    if mensaje == "4":
-        break
+    print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",f"Respuesta del servidor: {respuesta}")
+
 
 # Cerramos la conexión con el servidor
 cliente_socket.close()
