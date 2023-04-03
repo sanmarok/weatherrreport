@@ -46,7 +46,7 @@ class WeatherData:
         self.arc_int = arc_int
 
 # Función que maneja cada conexión entrante
-def manejar_cliente(cliente_socket, direccion, last_update, data_measurement):
+def manejar_cliente(cliente_socket, direccion):
     
     #Variable globales
     global last_update_g
@@ -67,23 +67,20 @@ def manejar_cliente(cliente_socket, direccion, last_update, data_measurement):
             break
         match datos:
             case "1":
-                if(datetime.now() - last_update > timedelta(minutes = 5)):
-                    data_measurement = weather_measurement()
+                if(datetime.now() - last_update_g >= timedelta(minutes= 5)):
+                    data_measurement_g = weather_measurement()
                     last_update_g = datetime.now()
-                    data_measurement_g = data_measurement
                     print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.BLUE,f"Medicion actualizada",Fore.WHITE)
                 
-                respuesta = f"Temperatura: {data_measurement.temp}C° - Humedad: {data_measurement.out_hum}%"
+                respuesta = f"Temperatura: {data_measurement_g.temp}C° - Humedad: {data_measurement_g.out_hum}%"
                 # Generamos una respuesta codificada en UTF-8
                 cliente_socket.send(respuesta.encode("utf-8"))
-                print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.LIGHTGREEN_EX,f"Solicitud tipo 1 entregada ",Fore.WHITE,f"{direccion[0]}:{direccion[1]}")
+                print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.YELLOW,f"Solicitud tipo 1 entregada ",Fore.WHITE,f"{direccion[0]}:{direccion[1]}")
             case "2":
                 respuesta = "Solicitud 2"
             case _:
                 respuesta = "No se como llegaste aca"
 
-
-    
     # Mensaje de salida cuando se cierra la conexión
     print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.RED,f"Conexión cerrada con       ",Fore.WHITE,f"{direccion[0]}:{direccion[1]}")
     cliente_socket.close()
@@ -161,5 +158,5 @@ print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.BLUE,f"Medicion ini
 # Bucle principal que acepta conexiones entrantes y crea un hilo para manejar cada una
 while True:
     cliente_socket, direccion = servidor_socket.accept()
-    hilo_cliente = threading.Thread(target=manejar_cliente, args=(cliente_socket, direccion, last_update_g, data_measurement_g))
+    hilo_cliente = threading.Thread(target=manejar_cliente, args=(cliente_socket, direccion))
     hilo_cliente.start()
