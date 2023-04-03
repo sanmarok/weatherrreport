@@ -1,9 +1,32 @@
-import socket
 import os
+import socket
 import rich
 from rich.table import Table
 from colorama import Fore
-from datetime import datetime
+from datetime import datetime, timedelta
+
+def control_configuracion():
+    os.system("cls")
+    menu = Table("Opcion","Descripcion")
+    menu.add_row("  1  ","   Local ")
+    menu.add_row("  2  ","    LAN  ")
+    rich.print(menu)
+    
+    opcion = int(input("Opcion: "))
+    
+    if opcion != 1 and opcion != 2:
+        control_configuracion()
+    else:
+        match opcion:
+            case 1:
+                return "127.0.0.1"
+            case 2:
+                hostname = socket.gethostname()
+                ip_address = socket.gethostbyname(hostname)
+                return ip_address
+            case _:
+                control_configuracion()
+
 
 def mensajecontrol():
     mensaje = input("Opcion: ")
@@ -16,10 +39,12 @@ def mensajecontrol():
         return mensaje
 
 os.system("cls")
+
 # Dirección IP y puerto del servidor al que nos queremos conectar
-direccion_ip = "127.0.0.1"
+direccion_ip = control_configuracion()
 puerto = 12345
 
+os.system("cls")
 # Creamos un socket para el cliente utilizando IPv4 y TCP
 cliente_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
