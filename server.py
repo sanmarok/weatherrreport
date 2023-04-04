@@ -104,7 +104,7 @@ def manejar_cliente(cliente_socket, direccion):
         cliente_socket.close()
         
     except ConnectionResetError:
-        print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.RED,f"Conexión interrumpida con  ",Fore.WHITE,f"{direccion[0]}:{direccion[1]}")
+        print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.LIGHTRED_EX,f"Conexión interrumpida con  ",Fore.WHITE,f"{direccion[0]}:{direccion[1]}")
     finally:
         cliente_socket.close()
     
