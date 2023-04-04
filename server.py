@@ -58,49 +58,56 @@ def manejar_cliente(cliente_socket, direccion):
     mensaje_bienvenida = "¡Conexion exitosa!"
     cliente_socket.send(mensaje_bienvenida.encode("utf-8"))
 
-    # Bucle principal que recibe y envía mensajes hasta que el cliente cierra la conexión
-    while True:
-        # Recibimos datos del cliente y los decodificamos en una cadena de texto utilizando la codificación UTF-8
-        datos = cliente_socket.recv(1024).decode("utf-8")
-        if not datos:
-            # Si no hay datos, significa que el cliente cerró la conexión
-            break
-        match datos:
-            case "3":
-                if(datetime.now() - last_update_g >= timedelta(minutes= 5)):
-                    data_measurement_g = weather_measurement()
-                    last_update_g = datetime.now()
-                    print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.BLUE,f"Medicion actualizada",Fore.WHITE)
-                respuesta = '{"temperatura": ' + str(data_measurement_g.temp) + ', "humedad": ' + str(data_measurement_g.out_hum) + '}'
-                # Generamos una respuesta codificada en UTF-8
-                cliente_socket.send(respuesta.encode("utf-8"))
-                print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.YELLOW,f"Solicitud tipo 3 entregada ",Fore.WHITE,f"{direccion[0]}:{direccion[1]}")
-            case "2":
-                if(datetime.now() - last_update_g >= timedelta(minutes= 5)):
-                    data_measurement_g = weather_measurement()
-                    last_update_g = datetime.now()
-                    print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.BLUE,f"Medicion actualizada",Fore.WHITE)
-                respuesta = '{"temperatura": \"\"' + ', "humedad": ' + str(data_measurement_g.out_hum) + '}'
-                # Generamos una respuesta codificada en UTF-8
-                cliente_socket.send(respuesta.encode("utf-8"))
-                print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.YELLOW,f"Solicitud tipo 2 entregada ",Fore.WHITE,f"{direccion[0]}:{direccion[1]}")
-            case "1":
-                if(datetime.now() - last_update_g >= timedelta(minutes= 5)):
-                    data_measurement_g = weather_measurement()
-                    last_update_g = datetime.now()
-                    print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.BLUE,f"Medicion actualizada",Fore.WHITE)
-                respuesta = '{"temperatura": ' + str(data_measurement_g.temp) + ', "humedad": \"\"}'
-                # Generamos una respuesta codificada en UTF-8
-                cliente_socket.send(respuesta.encode("utf-8"))
-                # Generamos una respuesta codificada en UTF-8
-                cliente_socket.send(respuesta.encode("utf-8"))
-                print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.YELLOW,f"Solicitud tipo 1 entregada ",Fore.WHITE,f"{direccion[0]}:{direccion[1]}")
-            case _:
-                respuesta = "No se como llegaste aca"
-
-    # Mensaje de salida cuando se cierra la conexión
-    print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.RED,f"Conexión cerrada con       ",Fore.WHITE,f"{direccion[0]}:{direccion[1]}")
-    cliente_socket.close()
+    try:
+        # Bucle principal que recibe y envía mensajes hasta que el cliente cierra la conexión
+        while True:
+            # Recibimos datos del cliente y los decodificamos en una cadena de texto utilizando la codificación UTF-8
+            datos = cliente_socket.recv(1024).decode("utf-8")
+            if not datos:
+                # Si no hay datos, significa que el cliente cerró la conexión
+                break
+            match datos:
+                case "3":
+                    if(datetime.now() - last_update_g >= timedelta(minutes= 5)):
+                        data_measurement_g = weather_measurement()
+                        last_update_g = datetime.now()
+                        print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.BLUE,f"Medicion actualizada",Fore.WHITE)
+                    respuesta = '{"temperatura": ' + str(data_measurement_g.temp) + ', "humedad": ' + str(data_measurement_g.out_hum) + '}'
+                    # Generamos una respuesta codificada en UTF-8
+                    cliente_socket.send(respuesta.encode("utf-8"))
+                    print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.YELLOW,f"Solicitud tipo 3 entregada ",Fore.WHITE,f"{direccion[0]}:{direccion[1]}")
+                case "2":
+                    if(datetime.now() - last_update_g >= timedelta(minutes= 5)):
+                        data_measurement_g = weather_measurement()
+                        last_update_g = datetime.now()
+                        print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.BLUE,f"Medicion actualizada",Fore.WHITE)
+                    respuesta = '{"temperatura": \"\"' + ', "humedad": ' + str(data_measurement_g.out_hum) + '}'
+                    # Generamos una respuesta codificada en UTF-8
+                    cliente_socket.send(respuesta.encode("utf-8"))
+                    print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.YELLOW,f"Solicitud tipo 2 entregada ",Fore.WHITE,f"{direccion[0]}:{direccion[1]}")
+                case "1":
+                    if(datetime.now() - last_update_g >= timedelta(minutes= 5)):
+                        data_measurement_g = weather_measurement()
+                        last_update_g = datetime.now()
+                        print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.BLUE,f"Medicion actualizada",Fore.WHITE)
+                    respuesta = '{"temperatura": ' + str(data_measurement_g.temp) + ', "humedad": \"\"}'
+                    # Generamos una respuesta codificada en UTF-8
+                    cliente_socket.send(respuesta.encode("utf-8"))
+                    # Generamos una respuesta codificada en UTF-8
+                    cliente_socket.send(respuesta.encode("utf-8"))
+                    print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.YELLOW,f"Solicitud tipo 1 entregada ",Fore.WHITE,f"{direccion[0]}:{direccion[1]}")
+                case _:
+                    respuesta = "Felicidades encontraste un error"
+                    
+        # Mensaje de salida cuando se cierra la conexión
+        print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.RED,f"Conexión cerrada con       ",Fore.WHITE,f"{direccion[0]}:{direccion[1]}")
+        cliente_socket.close()
+        
+    except ConnectionResetError:
+        print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.RED,f"Conexión interrumpida con  ",Fore.WHITE,f"{direccion[0]}:{direccion[1]}")
+    finally:
+        cliente_socket.close()
+    
     
 def control_configuracion():
     os.system("cls")
