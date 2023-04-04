@@ -5,7 +5,7 @@ from rich.table import Table
 from colorama import Fore
 from datetime import datetime
 
-dict_data = {'temperatura': "", 'humedad': ""}
+dict_data_local = {'temperatura': "", 'humedad': ""}
 
 def control_configuracion():
     os.system("cls")
@@ -66,20 +66,35 @@ rich.print(menu)
 
 # Bucle principal que permite al usuario enviar mensajes al servidor
 while True:
-    mensaje = mensajecontrol()
-    
-    # Si el usuario ingresa la opcion 4, salimos del bucle
-    if mensaje == "4":
-        break
-    
+    mensaje = mensajecontrol()                
     # Codificamos el mensaje en UTF-8 y lo enviamos al servidor
-    cliente_socket.send(mensaje.encode("utf-8"))
-    # Recibimos la respuesta del servidor y la decodificamos en una cadena de texto utilizando la codificación UTF-8
-    respuesta = cliente_socket.recv(1024).decode("utf-8")
-    print("")
-    print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",f"Respuesta del servidor: {respuesta}")
-    dict_data = eval(str(respuesta))
-    print("La temperatura es",dict_data["temperatura"],"C° y la humedad exterior es",dict_data["humedad"],"%")
+    if(mensaje != "4"):
+        cliente_socket.send(mensaje.encode("utf-8"))
+        # Recibimos la respuesta del servidor y la decodificamos en una cadena de texto utilizando la codificación UTF-8
+        respuesta = cliente_socket.recv(1024).decode("utf-8")
+        print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",f" Respuesta del servidor: {respuesta}")
+        dict_data = eval(str(respuesta))
+        
+    match mensaje:
+        case "1":
+            print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.BLUE,f"Temperatura actualizada",Fore.WHITE)
+            dict_data_local["temperatura"] = dict_data["temperatura"]
+            print("La temperatura es",dict_data_local["temperatura"],"C° y la humedad exterior es",dict_data_local["humedad"],"%")
+        case "2":
+            print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.BLUE,f"Humedad actualizada",Fore.WHITE)
+            dict_data_local["humedad"] = dict_data["humedad"]
+            print("La temperatura es",dict_data_local["temperatura"],"C° y la humedad exterior es",dict_data_local["humedad"],"%")
+        case "3":
+            print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.BLUE,f"Medicion actualizada",Fore.WHITE)
+            dict_data_local["temperatura"] = dict_data["temperatura"]
+            dict_data_local["humedad"] = dict_data["humedad"]
+            print("La temperatura es",dict_data_local["temperatura"],"C° y la humedad exterior es",dict_data_local["humedad"],"%")
+        case "4":
+            # Si el usuario ingresa la opcion 4, salimos del bucle
+            break
+        case _:
+            print("¡Felicidades! Encontraste un error")
+    
 # Cerramos la conexión con el servidor
 cliente_socket.close()
 

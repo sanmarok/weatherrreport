@@ -93,11 +93,9 @@ def manejar_cliente(cliente_socket, direccion):
                     respuesta = '{"temperatura": ' + str(data_measurement_g.temp) + ', "humedad": \"\"}'
                     # Generamos una respuesta codificada en UTF-8
                     cliente_socket.send(respuesta.encode("utf-8"))
-                    # Generamos una respuesta codificada en UTF-8
-                    cliente_socket.send(respuesta.encode("utf-8"))
                     print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.YELLOW,f"Solicitud tipo 1 entregada ",Fore.WHITE,f"{direccion[0]}:{direccion[1]}")
                 case _:
-                    respuesta = "Felicidades encontraste un error"
+                    respuesta = "¡Felicidades! Encontraste un error"
                     
         # Mensaje de salida cuando se cierra la conexión
         print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.RED,f"Conexión cerrada con       ",Fore.WHITE,f"{direccion[0]}:{direccion[1]}")
@@ -107,8 +105,7 @@ def manejar_cliente(cliente_socket, direccion):
         print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",Fore.LIGHTRED_EX,f"Conexión interrumpida con  ",Fore.WHITE,f"{direccion[0]}:{direccion[1]}")
     finally:
         cliente_socket.close()
-    
-    
+       
 def control_configuracion():
     os.system("cls")
     menu = Table("Opcion","Descripcion")
