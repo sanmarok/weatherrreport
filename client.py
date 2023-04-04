@@ -3,7 +3,9 @@ import socket
 import rich
 from rich.table import Table
 from colorama import Fore
-from datetime import datetime, timedelta
+from datetime import datetime
+
+dict_data = {'temperatura': "", 'humedad': ""}
 
 def control_configuracion():
     os.system("cls")
@@ -12,7 +14,7 @@ def control_configuracion():
     menu.add_row("  2  ","    LAN  ")
     rich.print(menu)
     
-    opcion = int(input("Opcion: "))
+    opcion = int(input("\nOpcion: "))
     
     if opcion != 1 and opcion != 2:
         control_configuracion()
@@ -21,15 +23,14 @@ def control_configuracion():
             case 1:
                 return "127.0.0.1"
             case 2:
-                hostname = socket.gethostname()
-                ip_address = socket.gethostbyname(hostname)
+                ip_address = str(input("Ingrese la IP del servidor:"))
                 return ip_address
             case _:
                 control_configuracion()
 
 
 def mensajecontrol():
-    mensaje = input("Opcion: ")
+    mensaje = input("\nOpcion: ")
     if mensaje != "1" and mensaje != "2" and mensaje != "3" and mensaje != "4":
         os.system("cls")
         print(Fore.RED,"¡Error!",Fore.WHITE)
@@ -53,7 +54,7 @@ cliente_socket.connect((direccion_ip, puerto))
 
 # Recibimos el mensaje de bienvenida del servidor y lo decodificamos en una cadena de texto utilizando la codificación UTF-8
 mensaje_bienvenida = cliente_socket.recv(1024).decode("utf-8")
-print(Fore.GREEN, mensaje_bienvenida, Fore.WHITE)
+print(Fore.GREEN,"\t",mensaje_bienvenida, Fore.WHITE,"\n")
 
 menu = Table("Opcion","     Descripcion")
 menu.add_row("  1  ","Temperatura")
@@ -75,9 +76,10 @@ while True:
     cliente_socket.send(mensaje.encode("utf-8"))
     # Recibimos la respuesta del servidor y la decodificamos en una cadena de texto utilizando la codificación UTF-8
     respuesta = cliente_socket.recv(1024).decode("utf-8")
+    print("")
     print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",f"Respuesta del servidor: {respuesta}")
-
-
+    dict_data = eval(str(respuesta))
+    print("La temperatura es",dict_data["temperatura"],"C° y la humedad exterior es",dict_data["humedad"],"%")
 # Cerramos la conexión con el servidor
 cliente_socket.close()
 
