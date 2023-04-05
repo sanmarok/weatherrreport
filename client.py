@@ -1,4 +1,31 @@
 import os
+import importlib
+
+def verificar_instalacion_librerias(libs):
+    """
+    Verifica si las librerías están instaladas y las instala si es necesario.
+
+    Args:
+        libs (list): Lista de nombres de las librerías a verificar.
+
+    Returns:
+        None
+    """
+    for lib in libs:
+        try:
+            importlib.import_module(lib)
+            print(f"{lib} está instalada.")
+        except ImportError:
+            print(f"{lib} no está instalada. Instalando...")
+            os.system(f"pip install {lib}")
+            print(f"{lib} ha sido instalada.")
+            
+# Lista de librerías a verificar
+libs = ["os", "socket", "rich", "ast", "rich.table", "colorama", "datetime"]
+
+# Verificar e instalar las librerías necesarias
+verificar_instalacion_librerias(libs)
+           
 import socket
 import rich
 import ast
