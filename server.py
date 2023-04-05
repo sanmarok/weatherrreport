@@ -115,18 +115,20 @@ def control_configuracion():
     
     opcion = int(input("Opcion: "))
     
-    if opcion != 1 and opcion != 2:
-        control_configuracion()
-    else:
-        match opcion:
-            case 1:
-                return "127.0.0.1"
-            case 2:
-                hostname = socket.gethostname()
-                ip_address = socket.gethostbyname(hostname)
-                return ip_address
-            case _:
-                control_configuracion()
+    while opcion != 1 and opcion != 2:
+        os.system("cls")
+        print(Fore.RED,"¡Error!",Fore.WHITE)
+        rich.print(menu)
+        opcion = int(input("\nOpcion: "))     
+
+    match opcion:
+        case 1:
+            return "127.0.0.1"
+        case 2:
+            hostname = socket.gethostname()
+            ip_address = socket.gethostbyname(hostname)
+            return ip_address
+
           
 def weather_measurement():
     url = "https://www.frcon.utn.edu.ar/galileo/downld02.txt"

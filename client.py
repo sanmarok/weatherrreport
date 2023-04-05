@@ -1,6 +1,7 @@
 import os
 import socket
 import rich
+import ast
 from rich.table import Table
 from colorama import Fore
 from datetime import datetime
@@ -16,28 +17,29 @@ def control_configuracion():
     
     opcion = int(input("\nOpcion: "))
     
-    if opcion != 1 and opcion != 2:
-        control_configuracion()
-    else:
-        match opcion:
-            case 1:
-                return "127.0.0.1"
-            case 2:
-                ip_address = str(input("Ingrese la IP del servidor:"))
-                return ip_address
-            case _:
-                control_configuracion()
+    while opcion != 1 and opcion != 2:
+        os.system("cls")
+        print(Fore.RED,"¡Error!",Fore.WHITE)
+        rich.print(menu)
+        opcion = int(input("\nOpcion: "))        
+
+    match opcion:
+        case 1:
+            return "127.0.0.1"
+        case 2:
+            ip_address = str(input("Ingrese la IP del servidor:"))
+            return ip_address
 
 
 def mensajecontrol():
     mensaje = input("\nOpcion: ")
-    if mensaje != "1" and mensaje != "2" and mensaje != "3" and mensaje != "4":
+    while mensaje != "1" and mensaje != "2" and mensaje != "3" and mensaje != "4":
         os.system("cls")
         print(Fore.RED,"¡Error!",Fore.WHITE)
         rich.print(menu)
-        mensajecontrol()
-    else:
-        return mensaje
+        mensaje = input("\nOpcion: ")
+
+    return mensaje
 
 os.system("cls")
 
@@ -73,7 +75,7 @@ while True:
         # Recibimos la respuesta del servidor y la decodificamos en una cadena de texto utilizando la codificación UTF-8
         respuesta = cliente_socket.recv(1024).decode("utf-8")
         print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")," -",f" Respuesta del servidor: {respuesta}")
-        dict_data = eval(str(respuesta))
+        dict_data = ast.literal_eval((str(respuesta)))
         
     match mensaje:
         case "1":
@@ -93,7 +95,7 @@ while True:
             # Si el usuario ingresa la opcion 4, salimos del bucle
             break
         case _:
-            print("¡Felicidades! Encontraste un error")
+            print("¡Felicidades! Encontr4e un error")
     
 # Cerramos la conexión con el servidor
 cliente_socket.close()
