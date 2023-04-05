@@ -1,8 +1,44 @@
-#Descripcion
+# Description
 
-El código que proporcionaste parece ser un cliente de socket en Python que se conecta a un servidor remoto para obtener datos de temperatura y humedad. El cliente se encarga de verificar e instalar las librerías necesarias, obtener la dirección IP del servidor a través de la función control_configuracion(), y permite al usuario seleccionar diferentes opciones para solicitar información al servidor.
+### The code is a Python socket client that connects to a remote server to obtain temperature and humidity data. The client is responsible for verifying and installing the necessary libraries, obtaining the server's IP address through the control_configuracion() function, and allowing the user to select different options to request information from the server.  
+<br>
 
-El flujo general del código del cliente es el siguiente:
+### The general flow of the client code is as follows:
+
+<br>
+
+1. The necessary libraries are imported, such as os, socket, rich, ast, rich.table, colorama, and datetime.
+
+2. The verify_installation_libraries() function is defined to verify and install the necessary libraries.
+
+3. The control_configuracion() function is defined to obtain the server's IP address through an interactive menu.
+
+4. The mensajecontrol() function is defined to obtain the user's option to request information from the server.
+
+5. The socket connection to the remote server is established using the specified IP address and port.
+
+6. The welcome message from the server is received and displayed.
+
+7. An interactive menu is displayed for the user to select different options to request information from the server.
+
+8. The user's selected message is sent to the server, and the server's response is received.
+
+9. Depending on the option selected by the user, the temperature and humidity information is updated in a local dictionary dict_data_local.
+
+10. If the user selects option 4, the main loop is exited, and the connection with the server is closed.
+  
+
+<br><br>
+
+# Descripción
+
+### El código es un cliente de socket en Python que se conecta a un servidor remoto para obtener datos de temperatura y humedad. El cliente se encarga de verificar e instalar las librerías necesarias, obtener la dirección IP del servidor a través de la función control_configuracion(), y permite al usuario seleccionar diferentes opciones para solicitar información al servidor.
+
+<br>
+
+### El flujo general del código del cliente es el siguiente:
+
+<br>
 
 1. Se importan las librerías necesarias, como os, socket, rich, ast, rich.table, colorama y datetime.
 
